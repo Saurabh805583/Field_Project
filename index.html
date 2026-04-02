@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Cyber Security for Teen Field Project Report</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+    <style>
+
+        /* General Body */
+
+        body { margin:0; font-family:Arial; background:#000; color:#0f0; overflow-x:hidden; cursor:none; }
+
+
+
+        /* Video Background */
+
+        video#bgVideo { position:fixed; width:100%; height:100%; object-fit:cover; z-index:-4; filter:brightness(0.3); }
+
+
+
+        /* Header */
+
+        header { text-align:center; padding:20px; background:rgba(0,0,0,0.5); text-shadow:0 0 20px #0f0,0 0 40px #0f0; position:relative; z-index:4; }
+
+
+
+        /* Section */
+
+        section { background: rgba(0,0,0,0.7); margin:20px; padding:20px; border-radius:10px; box-shadow:0 0 40px #0f0; z-index:4; position:relative; }
+
+        h2 { color:#0f0; text-shadow:0 0 10px #0f0; }
+
+
+
+        /* Slider */
+
+        .slider { position:relative; overflow:hidden; margin-top:15px; z-index:4; }
+
+        .track { display:flex; gap:15px; animation:scroll 25s linear infinite; }
+
+        .track:hover { animation-play-state:paused; }
+
+        img { width:120px; height:120px; border-radius:50%; cursor:pointer; border:3px solid #0f0; transition:0.3s; box-shadow:0 0 5px #0f0,0 0 15px #0f0; }
+
+        img:hover { transform:scale(1.2); animation: rainbowGlow 2s infinite; }
+
+        @keyframes rainbowGlow {
+
+            0% { box-shadow:0 0 10px red,0 0 30px yellow; }
+
+            25% { box-shadow:0 0 10px orange,0 0 30px green; }
+
+            50% { box-shadow:0 0 10px blue,0 0 30px purple; }
+
+            75% { box-shadow:0 0 10px pink,0 0 30px cyan; }
+
+            100% { box-shadow:0 0 10px red,0 0 30px yellow; }
+
+        }
+
+        @keyframes scroll { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
+
+
+
+        /* Buttons */
+
+        button { position:absolute; top:40%; background:#0f0; border:none; color:#000; padding:12px; font-weight:bold; cursor:pointer; animation: glow 1.5s infinite alternate; z-index:4; }
+
+        .prev { left:0; } .next { right:0; }
+
+        @keyframes glow { 0%{ box-shadow:0 0 5px #0f0,0 0 20px #0f0; } 50%{ box-shadow:0 0 20px #0f0,0 0 40px #0f0; } 100%{ box-shadow:0 0 10px #0f0,0 0 30px #0f0; } }
+
+
+
+        /* Popup */
+
+        .popup { display:none; position:fixed; width:100%; height:100%; background:rgba(0,0,0,0.95); justify-content:center; align-items:center; z-index:6; }
+
+        .popup img { width:70%; max-width:500px; border-radius:10px; box-shadow:0 0 40px #0f0,0 0 80px #0f0; }
+
+
+
+        /* HUD + Ticker */
+
+        #ticker { position:fixed; bottom:0; width:100%; background:rgba(0,0,0,0.7); color:#0f0; padding:5px 10px; font-weight:bold; font-family:monospace; z-index:4; }
+
+        #hud { position:fixed; top:10px; right:10px; background:rgba(0,0,0,0.5); padding:15px; border-radius:10px; color:#0f0; font-family:monospace; text-shadow:0 0 5px #0f0; z-index:5; }
+
+        .hud-item { margin:5px 0; }
+
+
+
+        /* Canvas layers for effects */
+
+        canvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-3; }
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+
+<!-- Background Video -->
+
+<video autoplay muted loop id="bgVideo">
+
+    <source src="video/bg.mp4" type="video/mp4">
+
+</video>
+
+
+
+<!-- Canvas layers for effects -->
+
+<canvas id="matrix"></canvas>
+
+<canvas id="particles"></canvas>
+
+<canvas id="glitch"></canvas>
+
+<canvas id="cursorParticles"></canvas>
+
+
+
+<header>
+
+    <h1>Cyber Security Field Project Report</h1>
+
+    <p>Conducted at Janta Highschool, Talni</p>
+
+</header>
+
+
+
+<!-- School Photos Slider -->
+
+<section>
+
+<h2>Photos from Janta Highschool, Talni</h2>
+
+<div class="slider">
+
+    <button class="prev" onclick="move(-1,'school')">◀</button>
+
+    <div class="track" id="school">
+
+        <img src="C:\Users\Tech Bazaar\Pictures\IMG_20250824_115601.jpg" onclick="clickEffect(this.src)">
+
+        <img src="C:\Users\Tech Bazaar\Pictures\IMG-20250926-WA0082.jpg" onclick="clickEffect(this.src)">
+
+        <img src="C:\Users\Tech Bazaar\Pictures\IMG-20250926-WA0083.jpg" onclick="clickEffect(this.src)">
+
+        <img src="C:\Users\Tech Bazaar\Pictures\IMG-20250926-WA0084.jpg" onclick="clickEffect(this.src)">
+
+        <!-- Repeat for infinite scroll -->
+
+        <img src="C:\Users\Tech Bazaar\Pictures\IMG-20250926-WA0087.jpg" onclick="clickEffect(this.src)">
+
+        <img src="C:\Users\Tech Bazaar\Pictures\IMG-20250926-WA0089.jpg" onclick="clickEffect(this.src)">
+
+	  <img src="C:\Users\Tech Bazaar\Pictures\IMG-20250926-WA0090.jpg">
+
+       
+
+	<img src="C:\Users\Tech Bazaar\Pictures\IMG_20250824_115601.jpg" onclick="clickEffect(this.src)">
+
+        <img src="C:\Users\Tech Bazaar\Pictures\IMG-20250926-WA0082.jpg" onclick="clickEffect(this.src)">
+
+        <img src="C:\Users\Tech Bazaar\Pictures\IMG-20250926-WA0083.jpg" onclick="clickEffect(this.src)">
+
+        <img src="C:\Users\Tech Bazaar\Pictures\IMG-20250926-WA0084.jpg" onclick="clickEffect(this.src)">
+
+        <!-- Repeat for infinite scroll -->
+
+        <img src="C:\Users\Tech Bazaar\Pictures\IMG-20250926-WA0087.jpg" onclick="clickEffect(this.src)">
+
+        <img src="C:\Users\Tech Bazaar\Pictures\IMG-20250926-WA0089.jpg" onclick="clickEffect(this.src)">
+
+	  <img src="C:\Users\Tech Bazaar\Pictures\IMG-20250926-WA0090.jpg" onclick="clickEffect(this.src)">
+
+       
+
+
+
+	
+
+    </div>
+
+    <button class="next" onclick="move(1,'school')">▶</button>
+
+</div>
+
+</section>
+
+
+
+<!-- Team Members Slider -->
+
+<section>
+
+<h2>Team Members</h2>
+
+<div class="slider">
+
+    <button class="prev" onclick="move(-1,'team')">◀</button>
+
+    <div class="track" id="team">
+
+        <img src="images/saurabh.jpg" onclick="clickEffect(this.src)">
+
+        <img src="images/gaurav.jpg" onclick="clickEffect(this.src)">
+
+        <img src="images/sharad.jpg" onclick="clickEffect(this.src)">
+
+        <img src="images/abhijit.jpg" onclick="clickEffect(this.src)">
+
+        <!-- Repeat for infinite scroll -->
+
+        <img src="images/saurabh.jpg">
+
+    </div>
+
+    <button class="next" onclick="move(1,'team')">▶</button>
+
+</div>
+
+</section>
+
+
+
+<!-- Old Project Content Sections -->
+
+<section id="intro">
+
+<h2>1. Introduction</h2>
+
+<p>In today's digital age, technology plays an essential role in our daily lives.</p>
+
+<p>Our project at <strong>Janta Highschool, Talni</strong> aimed to raise awareness.</p>
+
+</section>
+
+
+
+<section id="motivation">
+
+<h2>2. Motivation</h2>
+
+<p>Increasing use of technology and lack of awareness inspired this project.</p>
+
+</section>
+
+
+
+<section id="objectives">
+
+<h2>3. Objectives</h2>
+
+<ul>
+
+<li>Educate students on Cyber Security basics.</li>
+
+<li>Raise awareness about cyber safety.</li>
+
+<li>Teach practical safety measures.</li>
+
+<li>Promote responsible use of technology.</li>
+
+</ul>
+
+</section>
+
+
+
+<section id="methodology">
+
+<h2>4. Methodology</h2>
+
+<ul>
+
+<li>Research on cyber threats.</li>
+
+<li>Interactive sessions.</li>
+
+<li>Distributed handouts.</li>
+
+</ul>
+
+</section>
+
+
+
+<section id="observations">
+
+<h2>5. Observations / Data Collected</h2>
+
+<p>Students were mostly unaware of phishing and ransomware before the session.</p>
+
+<p>We distributed a survey form to understand their knowledge.</p>
+
+<img src="images/survey.jpg" alt="Survey Form" width="80%">
+
+<p>After analysis, awareness improved significantly.</p>
+
+</section>
+
+
+
+<section id="results">
+
+<h2>6. Results & Interpretation</h2>
+
+<p>85% of students could identify cyber threats after the session.</p>
+
+</section>
+
+
+
+<section id="conclusion">
+
+<h2>7. Conclusion</h2>
+
+<p>The project successfully raised cyber security awareness.</p>
+
+</section>
+
+
+
+<section id="social">
+
+<h2>8. Social Relevance</h2>
+
+<p>Cyber education helps create a safe digital society.</p>
+
+</section>
+
+
+
+<section id="challenges">
+
+<h2>9. Challenges Faced</h2>
+
+<ul>
+
+<li>Lack of technical knowledge.</li>
+
+<li>Limited resources.</li>
+
+<li>Low awareness.</li>
+
+</ul>
+
+</section>
+
+
+
+<section id="suggestions">
+
+<h2>10. Suggestions</h2>
+
+<ul>
+
+<li>Conduct regular awareness programs.</li>
+
+<li>Include cyber security in syllabus.</li>
+
+</ul>
+
+</section>
+
+
+
+<footer style="text-align:center; color:#0f0; padding:20px;">
+
+<p><strong>@ 2026 Cyber Security Field Project</strong></p>
+
+<p><em>Project Developed By:</em></p>
+
+<p>
+
+1) Saurabh Vijay Ingle<br>
+
+2) Gaurav Anil Pande<br>
+
+3) Sharad Jitendra Warade<br>
+
+4) Abhijit Ranjit Ingle
+
+</p>
+
+</footer>
+
+
+
+<!-- Popups, Slider Script, Matrix, Particles, HUD -->
+
+<div class="popup" id="pop" onclick="hide()"><img id="big"></div>
+
+<audio id="clickSound" src="sounds/click.mp3"></audio>
+
+<div id="ticker">📡 Cyber Awareness: Students Reached 120 | Threats Blocked 75 | Safe Users 200</div>
+
+<div id="hud">
+
+<div class="hud-item">Students: <span id="hudStudents">120</span></div>
+
+<div class="hud-item">Threats Blocked: <span id="hudThreats">75</span></div>
+
+<div class="hud-item">Safe Users: <span id="hudSafe">200</span></div>
+
+</div>
+
+
+
+<script>
+
+// IMAGE POPUP + SOUND
+
+function clickEffect(src){
+
+document.getElementById("clickSound").play();
+
+show(src);
+
+}
+
+function show(src){ document.getElementById("pop").style.display="flex"; document.getElementById("big").src=src; }
+
+function hide(){ document.getElementById("pop").style.display="none"; }
+
+
+
+// SLIDER MOVE
+
+let pos=0; const speed=140;
+
+function move(dir,id){ const track=document.getElementById(id); pos+=dir*speed; track.style.transform="translateX("+pos+"px)"; }
+
+
+
+// KEYBOARD NAVIGATION
+
+document.addEventListener("keydown", function(e){
+
+if(e.key==="ArrowLeft") move(-1,'school'), move(-1,'team');
+
+if(e.key==="ArrowRight") move(1,'school'), move(1,'team');
+
+});
+
+
+
+// MATRIX BACKGROUND
+
+const c=document.getElementById("matrix"), ctx=c.getContext("2d");
+
+c.height=window.innerHeight; c.width=window.innerWidth;
+
+const cols=Math.floor(c.width/20); const yArr=new Array(cols).fill(0);
+
+function matrixDraw(){
+
+ctx.fillStyle="rgba(0,0,0,0.05)"; ctx.fillRect(0,0,c.width,c.height);
+
+ctx.fillStyle="#0f0"; ctx.font="20px monospace";
+
+for(let i=0;i<cols;i++){
+
+const text=String.fromCharCode(33+Math.random()*94);
+
+ctx.fillText(text,i*20,yArr[i]*20);
+
+if(yArr[i]*20>c.height && Math.random()>0.975) yArr[i]=0;
+
+yArr[i]++;
+
+}
+
+requestAnimationFrame(matrixDraw);
+
+}
+
+matrixDraw();
+
+
+
+// TICKER UPDATE + HUD COUNTERS
+
+setInterval(()=>{
+
+const s=Math.floor(Math.random()*200+50);
+
+const t=Math.floor(Math.random()*100);
+
+const u=Math.floor(Math.random()*300);
+
+document.getElementById("ticker").textContent=`📡 Students ${s} | Threats Blocked ${t} | Safe Users ${u}`;
+
+document.getElementById("hudStudents").textContent=s;
+
+document.getElementById("hudThreats").textContent=t;
+
+document.getElementById("hudSafe").textContent=u;
+
+},3000);
+
+
+
+// PARTICLE EFFECT ON BUTTON CLICK
+
+const pCanvas=document.getElementById("particles"), pCtx=pCanvas.getContext("2d");
+
+pCanvas.width=window.innerWidth; pCanvas.height=window.innerHeight;
+
+let particles=[];
+
+function createParticles(x,y){
+
+for(let i=0;i<50;i++){ particles.push({x:x, y:y, dx:(Math.random()-0.5)*4, dy:(Math.random()-0.5)*4, alpha:1}); }
+
+}
+
+function particleDraw(){
+
+pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
+
+for(let i=0;i<particles.length;i++){
+
+let p=particles[i];
+
+pCtx.fillStyle=`rgba(0,255,0,${p.alpha})`; pCtx.beginPath(); pCtx.arc(p.x,p.y,2,0,2*Math.PI); pCtx.fill();
+
+p.x+=p.dx; p.y+=p.dy; p.alpha-=0.02;
+
+if(p.alpha<=0){ particles.splice(i,1); i--; }
+
+}
+
+requestAnimationFrame(particleDraw);
+
+}
+
+particleDraw();
+
+document.querySelectorAll('button').forEach(btn=>{
+
+btn.addEventListener('click', e=>{ createParticles(e.clientX,e.clientY); });
+
+});
+
+
+
+// OPTIONAL: Background glitch effect
+
+const gCanvas=document.getElementById("glitch"), gCtx=gCanvas.getContext("2d");
+
+gCanvas.width=window.innerWidth; gCanvas.height=window.innerHeight;
+
+function glitchDraw(){
+
+gCtx.clearRect(0,0,gCanvas.width,gCanvas.height);
+
+gCtx.fillStyle="rgba(0,255,0,"+(Math.random()*0.05)+")";
+
+gCtx.fillRect(0,Math.random()*gCanvas.height,gCanvas.width,2);
+
+requestAnimationFrame(glitchDraw);
+
+}
+
+glitchDraw();
+
+
+
+// MOUSE FOLLOW PARTICLES
+
+const cCursor=document.getElementById("cursorParticles"), ctxCursor=cCursor.getContext("2d");
+
+cCursor.width=window.innerWidth; cCursor.height=window.innerHeight;
+
+let cursorParticles=[];
+
+document.addEventListener("mousemove", e=>{
+
+cursorParticles.push({x:e.clientX, y:e.clientY, dx:(Math.random()-0.5)*2, dy:(Math.random()-0.5)*2, alpha:1});
+
+});
+
+function cursorDraw(){
+
+ctxCursor.clearRect(0,0,cCursor.width,cCursor.height);
+
+for(let i=0;i<cursorParticles.length;i++){
+
+let p=cursorParticles[i];
+
+ctxCursor.fillStyle=`rgba(0,255,255,${p.alpha})`; ctxCursor.beginPath(); ctxCursor.arc(p.x,p.y,3,0,2*Math.PI); ctxCursor.fill();
+
+p.x+=p.dx; p.y+=p.dy; p.alpha-=0.02;
+
+if(p.alpha<=0){ cursorParticles.splice(i,1); i--; }
+
+}
+
+requestAnimationFrame(cursorDraw);
+
+}
+
+cursorDraw();
+
+
+
+</script>
+
+</body>
+
+  </html>
