@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Secure Access</title>
+<style>
+body {
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:black;
+    color:#0f0;
+    font-family:monospace;
+}
+
+.box {
+    padding:40px;
+    border:1px solid #0f0;
+    box-shadow:0 0 20px #0f0;
+    text-align:center;
+}
+
+input {
+    margin:10px;
+    padding:10px;
+    width:200px;
+    background:black;
+    border:1px solid #0f0;
+    color:#0f0;
+}
+
+button {
+    padding:10px 20px;
+    background:#0f0;
+    border:none;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+<h2>🔐 Secure Login</h2>
+
+<input type="text" id="user" placeholder="User ID"><br>
+<input type="password" id="pass" placeholder="Password"><br>
+
+<button onclick="login()">LOGIN</button>
+
+<p id="msg"></p>
+</div>
+
+<script>
+function login(){
+let u=document.getElementById("user").value;
+let p=document.getElementById("pass").value;
+
+if(u==="admin" && p==="1234"){
+document.getElementById("msg").innerText="Access Granted...";
+setTimeout(()=>{
+window.location.href="video.html";
+},1000);
+}else{
+document.getElementById("msg").innerText="Access Denied!";
+}
+}
+</script>
+
+</body>
+</html>
