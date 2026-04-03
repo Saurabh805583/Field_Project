@@ -1,31 +1,141 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Loading...</title>
+<title>Initializing System...</title>
 
 <style>
-body{margin:0; background:black;}
+body {
+    margin:0;
+    background:black;
+    overflow:hidden;
+}
 
-video{
-position:fixed;
-width:100%;
-height:100%;
-object-fit:cover;
+/* Video */
+video {
+    position:fixed;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* Glitch effect */
+#glitch {
+    position:fixed;
+    width:100%;
+    height:100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0,255,0,0.03),
+        rgba(0,255,0,0.03) 2px,
+        transparent 2px,
+        transparent 4px
+    );
+    animation: glitch 0.2s infinite;
+    pointer-events:none;
+}
+
+@keyframes glitch {
+    0% { transform:translate(0,0); }
+    25% { transform:translate(2px,-2px); }
+    50% { transform:translate(-2px,2px); }
+    75% { transform:translate(1px,-1px); }
+    100% { transform:translate(0,0); }
+}
+
+/* Text */
+#secureText {
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    color:#00ff88;
+    font-family: monospace;
+    text-align:center;
+}
+
+#line1 {
+    font-size:28px;
+    text-shadow:0 0 10px #00ff88, 0 0 30px #00ff88;
+    margin-bottom:20px;
+}
+
+.name {
+    font-size:22px;
+    opacity:0;
+    margin:5px 0;
+    text-shadow:0 0 8px #00ff88;
 }
 </style>
 </head>
 
 <body>
 
-<video id="v" autoplay>
-<source src="video/Futuristic_HUD_UI_Visuals_Sound_Design(1080p).mp4" type="video/mp4">
+<!-- VIDEO -->
+<video id="intro" autoplay playsinline>
+    <source src="video/intro.mp4" type="video/mp4">
 </video>
 
-<script>
-let v=document.getElementById("v");
+<!-- GLITCH -->
+<div id="glitch"></div>
 
-v.onended=function(){
-window.location.href="main.html";
+<!-- TEXT -->
+<div id="secureText">
+    <div id="line1"></div>
+
+    <div class="name" id="n1">Saurabh</div>
+    <div class="name" id="n2">Sharad</div>
+    <div class="name" id="n3">Gaurav</div>
+    <div class="name" id="n4">Abhijit</div>
+</div>
+
+<!-- TYPING SOUND -->
+<audio id="typingSound" src="sounds/typing.mp3"></audio>
+
+<script>
+let video = document.getElementById("intro");
+let typingAudio = document.getElementById("typingSound");
+
+typingAudio.loop = true; // loop sound
+
+let text = "🚀 Initializing Secure Interface...";
+let i = 0;
+
+// typing effect + sound
+function typeText(){
+
+    if(i === 0){
+        typingAudio.currentTime = 0;
+        typingAudio.play();
+    }
+
+    if(i < text.length){
+        document.getElementById("line1").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeText, 40);
+    } else {
+        typingAudio.pause();
+        typingAudio.currentTime = 0;
+    }
+}
+
+// show names one by one
+function showNames(){
+    let names = ["n1","n2","n3","n4"];
+    names.forEach((id, index)=>{
+        setTimeout(()=>{
+            document.getElementById(id).style.opacity = 1;
+        }, index * 500);
+    });
+}
+
+// WHEN VIDEO ENDS
+video.onended = function(){
+    typeText();
+    setTimeout(showNames, 1500);
+
+    setTimeout(()=>{
+        window.location.href = "main.html";
+    }, 4500);
 };
 </script>
 
