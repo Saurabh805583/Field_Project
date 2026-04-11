@@ -186,7 +186,7 @@
 
         <img src="Images/97a99843-46f1-4c4d-a922-6758733c9a68.jpg" onclick="clickEffect(this.src)">
 
-	   <img src="Images/986d31d8-af48-48db-bce1-dafe571c557a.jpg"> onclick="clickEffect(this.src)">
+	   <img src="Images/986d31d8-af48-48db-bce1-dafe571c557a.jpg" onclick="clickEffect(this.src)">
 
     	<img src="Images/cfa52e71-ba8a-4093-b36e-4be0df8c7975.jpg" onclick="clickEffect(this.src)">
 
@@ -434,9 +434,13 @@ function hide(){ document.getElementById("pop").style.display="none"; }
 
 // SLIDER MOVE
 
-let pos=0; const speed=140;
+function move(dir,id){ 
+  if(id === 'team') return;   // 🔥 Team fix
 
-function move(dir,id){ const track=document.getElementById(id); pos+=dir*speed; track.style.transform="translateX("+pos+"px)"; }
+  const track=document.getElementById(id); 
+  pos+=dir*speed; 
+  track.style.transform="translateX("+pos+"px)"; 
+}
 
 
 
